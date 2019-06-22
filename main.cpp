@@ -1,17 +1,19 @@
 #include <stdio.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
+
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 
 float WINDOW_WIDTH = 640;
 float WINDOW_HEIGHT = 640;
-int NUM_POINTS = 500;
+int NUM_POINTS = 1000;
 
 // figure out wtf to do with these
 float radius = 300;
 float lerpAmount = 0;
-int timesTable = 2;
+int timesTable = 140;
 
 struct Point { float x, y; };
 
