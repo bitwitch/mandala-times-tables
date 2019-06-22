@@ -168,13 +168,11 @@ void drawTimesTable(SDL_Renderer* rend, int timesTable, Point* points) {
 }
 
 void animateTimesTable(SDL_Renderer* rend, Point* points, int timesTable, float lerpAmount) {
-    float r,g,b,h,s,v,
+    float r, g, b, h, s=1.0f, v=1.0f,
           angleProduct, angleNextProduct,
           colorAngle, angle,
           destX, destY;
     int product, nextProduct;
-    s = 1.0f;
-    v = 1.0f;
     for (int i=1; i<NUM_POINTS; i++) {
         product = (i * timesTable) % NUM_POINTS;
         nextProduct = (i * (timesTable + 1)) % NUM_POINTS;
