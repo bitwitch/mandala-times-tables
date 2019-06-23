@@ -1,19 +1,15 @@
 #include <stdio.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
-
-
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
 
-float WINDOW_WIDTH = 640;
-float WINDOW_HEIGHT = 640;
-int NUM_POINTS = 1000;
-
-// figure out wtf to do with these
-float radius = 300;
-float lerpAmount = 0;
-int timesTable = 140;
+float windowWidth  = 640;
+float windowHeight = 640;
+float radius       = 300;
+float lerpAmount   = 0;
+int numPoints      = 400;
+int timesTable     = 2;
 
 struct Point { float x, y; };
 
@@ -35,7 +31,7 @@ int main(int argc, char** argv) {
     SDL_Window* win = SDL_CreateWindow("B1TW1TCH",
        SDL_WINDOWPOS_CENTERED,
        SDL_WINDOWPOS_CENTERED,
-       WINDOW_WIDTH, WINDOW_HEIGHT,0);
+       windowWidth, windowHeight,0);
 
     if (!win) {
         printf("error creating window: %s\n", SDL_GetError());
@@ -54,8 +50,8 @@ int main(int argc, char** argv) {
     }
 
     // SETUP
-    Point points[NUM_POINTS];
-    getPoints(points, NUM_POINTS, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, radius);
+    Point points[numPoints];
+    getPoints(points, numPoints, windowWidth/2, windowHeight/2, radius);
 
     int die = 0;
     while (!die) {
@@ -86,7 +82,7 @@ void draw(SDL_Renderer* rend, Point* points) {
     
     // draw circle
     SDL_SetRenderDrawColor(rend, 255, 14, 3, 1);
-    sdl_ellipse(rend, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, radius, radius);
+    sdl_ellipse(rend, windowWidth/2, windowHeight/2, radius, radius);
 
     lerpAmount += 0.0008;
     if (lerpAmount >= 1) {
@@ -163,8 +159,8 @@ void getPoints(Point* points, int numPoints, float centerX, float centerY, float
 }
 
 void drawTimesTable(SDL_Renderer* rend, int timesTable, Point* points) {
-    for (int i=1; i<NUM_POINTS; i++) {
-        int product = (i * timesTable) % NUM_POINTS;
+    for (int i=1; i<numPoints; i++) {
+        int product = (i * timesTable) % numPoints;
         SDL_RenderDrawLine(rend, points[i].x, points[i].y, points[product].x, points[product].y);
     }
 }
@@ -175,12 +171,12 @@ void animateTimesTable(SDL_Renderer* rend, Point* points, int timesTable, float 
           colorAngle, angle,
           destX, destY;
     int product, nextProduct;
-    for (int i=1; i<NUM_POINTS; i++) {
-        product = (i * timesTable) % NUM_POINTS;
-        nextProduct = (i * (timesTable + 1)) % NUM_POINTS;
+    for (int i=1; i<numPoints; i++) {
+        product = (i * timesTable) % numPoints;
+        nextProduct = (i * (timesTable + 1)) % numPoints;
         
-        angleProduct = (2 * M_PI / NUM_POINTS) * product;
-        angleNextProduct = (2 * M_PI / NUM_POINTS) * nextProduct;
+        angleProduct = (2 * M_PI / numPoints) * product;
+        angleNextProduct = (2 * M_PI / numPoints) * nextProduct;
         
         colorAngle = lerp(angleProduct, angleNextProduct, lerpAmount);
 
@@ -190,8 +186,8 @@ void animateTimesTable(SDL_Renderer* rend, Point* points, int timesTable, float 
 
         angle = lerp(angleProduct, angleNextProduct, lerpAmount);
      
-        destX = radius * cos(angle) + WINDOW_WIDTH/2;
-        destY = radius * sin(angle) + WINDOW_HEIGHT/2;   
+        destX = radius * cos(angle) + windowWidth/2;
+        destY = radius * sin(angle) + windowHeight/2;   
         
         h = colorAngle * 180 / M_PI; 
         HSVtoRGB(h,s,v, r,g,b);
